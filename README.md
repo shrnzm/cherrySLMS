@@ -1,9 +1,7 @@
 # Cherry Student Learning Management System (SLMS)
 
 ## Project Description
-The Student Learning Management System (SLMS) is a modular, web-based system designed to manage **students, courses, and course-student relationships**.  
-It allows administrators to input, search, edit, and delete course and student profiles, while also managing enrollments and relationships between courses and students.  
-The system is built following pre-set software construction standards, including naming conventions, modularity, and error handling best practices.
+The Student Learning Management System (SLMS) is a modular, web-based system designed to manage students, courses, and course-student relationships. It allows administrators to input, search, edit, and delete course and student profiles, while also managing enrollments and relationships between courses and students. The system is built following pre-set software construction standards, including naming conventions, modularity, and error handling best practices.
 
 
 ---
@@ -26,7 +24,7 @@ The system is built following pre-set software construction standards, including
   - Student ID
   - Email
   - Phone number
-- Search students by ID
+- Search students by student ID
 - Display all students in a clear, organized format
 
 ### 3. Course–Student Relationship
