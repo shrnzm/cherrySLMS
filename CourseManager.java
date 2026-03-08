@@ -73,7 +73,7 @@ class CourseManager {
             //Check that credit hour is an integer
             int creditHour = -1;
             while (true) {
-                System.out.print("Enter New Credit Hour (integer only): ");
+                System.out.print("Enter New Credit Hour: ");
                 String input = sc.nextLine();
                 try {
                     creditHour = Integer.parseInt(input);
@@ -91,7 +91,7 @@ class CourseManager {
             System.out.print("Enter New Summary: ");
             course.setCourseSummary(sc.nextLine());
 
-            System.out.print("Enter New MS Teams link: ");
+            System.out.print("Enter New MS Teams Link: ");
             course.setMsTeamsLink(sc.nextLine());
             
             System.out.println("\nCourse updated successfully.\nUpdated details:\n");
