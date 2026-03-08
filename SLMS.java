@@ -3,8 +3,11 @@ import java.util.*;
 class SLMS {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        
+        //Create manager object to manage courses 
         CourseManager manager = new CourseManager();
-
+        
+        //System menu
         while (true) {
             System.out.println("\n1. Add Course");
             System.out.println("2. Search Course");
@@ -12,10 +15,24 @@ class SLMS {
             System.out.println("4. Delete Course");
             System.out.println("5. View All Courses");
             System.out.println("6. Exit");
-            System.out.print("\nChoose option: ");
-
-            int choice = Integer.parseInt(sc.nextLine());
-
+            
+            //Check that option is integer
+            int choice = -1;
+            while (true) {
+                System.out.print("\nChoose option: ");
+                String input = sc.nextLine();
+                try {
+                    choice = Integer.parseInt(input);
+                    if (choice < 1 || choice > 6) {
+                        System.out.println("Please enter a number between 1 and 6.");
+                    } else {
+                        break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input! Please enter an integer.");
+                }
+            }
+            
             switch (choice) {
                 case 1:
                     manager.addCourse(sc);
@@ -24,6 +41,8 @@ class SLMS {
                 case 2:
                     System.out.print("Enter course code to search: ");
                     Course found = manager.searchCourse(sc.nextLine());
+                    
+                    //Check if course is found
                     if (found != null) {
                         System.out.println("\nCourse found.\n");
                         manager.displayCourse(found);
