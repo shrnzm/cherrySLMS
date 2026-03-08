@@ -15,11 +15,12 @@ class SLMS {
             System.out.println("4. Delete Course");
             System.out.println("5. View All Courses");
             System.out.println("6. Exit");
+            System.out.println();
             
             //Check that option is integer
             int choice = -1;
             while (true) {
-                System.out.print("\nChoose option: ");
+                System.out.print("Choose option: ");
                 String input = sc.nextLine();
                 try {
                     choice = Integer.parseInt(input);
