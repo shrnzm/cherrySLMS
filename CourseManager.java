@@ -1,14 +1,19 @@
 import java.util.*;
 
 class CourseManager {
+    //Array to store Course objects
     private Course[] courseArray = new Course[100];
     private int courseCount = 0;
 
+    //Add Course Method
     public void addCourse(Scanner sc) {
+        //Check if array is full
         if (courseCount >= courseArray.length) {
             System.out.println("\nCourse list is full. Cannot add new course.");
             return;
         }
+        
+        //Create new Course object
         Course newCourse = new Course();
         
         System.out.print("\nEnter Course Code: ");
@@ -17,6 +22,7 @@ class CourseManager {
         System.out.print("Enter Course Name: ");
         newCourse.setCourseName(sc.nextLine());
 
+        //Check that credit hour is an integer
         int creditHour = -1;
         while (true) {
             System.out.print("Enter Credit Hour: ");
@@ -39,13 +45,15 @@ class CourseManager {
 
         System.out.print("Enter MS Teams Link: ");
         newCourse.setMsTeamsLink(sc.nextLine());
-
+        
+        //Add new course to end of array
         courseArray[courseCount] = newCourse;
         courseCount++;
         System.out.println("\nCourse added successfully.");
     }
-
-        public Course searchCourse(String courseCode) {
+    
+    //Search Course Method
+    public Course searchCourse(String courseCode) {
             for (int i = 0; i < courseCount; i++) {
                 if (courseArray[i].getCourseCode().equals(courseCode)) {
                     return courseArray[i];
@@ -53,14 +61,16 @@ class CourseManager {
             }
             return null;
     }
-
+    
+    //Edit Course Method
     public void editCourse(String courseCode, Scanner sc) {
         Course course = searchCourse(courseCode);
 
         if (course != null) {
             System.out.print("Enter New Course Name: ");
             course.setCourseName(sc.nextLine());
-
+            
+            //Check that credit hour is an integer
             int creditHour = -1;
             while (true) {
                 System.out.print("Enter New Credit Hour (integer only): ");
@@ -83,14 +93,17 @@ class CourseManager {
 
             System.out.print("Enter New MS Teams link: ");
             course.setMsTeamsLink(sc.nextLine());
-
+            
             System.out.println("\nCourse updated successfully.\nUpdated details:\n");
+            
+            //Display edited course details
             displayCourse(course);
         } else {
             System.out.println("\nCourse not found.");
         }
     }
     
+    //Delete Course Method
     public void deleteCourse(String courseCode, Scanner sc) {
         Course course = searchCourse(courseCode);
 
@@ -100,15 +113,20 @@ class CourseManager {
         }
 
         System.out.println("\nCourse found.\n");
+        
+        //Display details of course to delete
         displayCourse(course);
         
         System.out.print("\nAre you sure you want to delete this course? (Y/N): ");
         String confirm = sc.nextLine();
+        
+        //Check for confirmation
         if (confirm.equalsIgnoreCase("N")) {
             System.out.println("Deletion cancelled.");
             return;
         }
-
+        
+        //Find index of course to delete
         int index = -1;
         for (int i = 0; i < courseCount; i++) {
             if (courseArray[i].getCourseCode().equals(courseCode)) {
@@ -117,16 +135,22 @@ class CourseManager {
             }
         }
         
+        //Shift all courses after deleted one to the left
         for (int i = index; i < courseCount - 1; i++) {
             courseArray[i] = courseArray[i + 1];
         }
-
+        
+        //Empty the last element in courseArray
         courseArray[courseCount - 1] = null;
         courseCount--;
+        
         System.out.println("\nCourse deleted successfully!\nUpdated course list:");
+        
+        //Display all courses
         viewAllCourses();
     }
     
+    //Display Course Method
     public void displayCourse(Course course) {
         if (course != null) {
             System.out.println("Course Name: " + course.getCourseName());
@@ -137,6 +161,7 @@ class CourseManager {
         }
     }
     
+    //View All Courses Method
     public void viewAllCourses() {
         if (courseCount == 0) {
             System.out.println("No courses available.");
