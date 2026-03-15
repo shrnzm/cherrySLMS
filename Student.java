@@ -68,18 +68,33 @@ public class Student {
         studentCount++;
         System.out.println("\nStudent profile added successfully.");
     }
-
-    public Student searchStudent(String id) {
+    
+    public Student searchStudent(String id, Scanner sc) {
+        // If Scanner is provided, ask user for ID
+        if (sc != null) {
+            System.out.print("\nEnter Student ID to search: ");
+            id = sc.nextLine();
+        }
+    
         for (int i = 0; i < studentCount; i++) {
             if (studentArray[i].getStudentId().equalsIgnoreCase(id)) {
-                return studentArray[i];
+                if (sc != null) {
+                    System.out.println("\nStudent found:");
+                    displayStudent(studentArray[i]);
+                }
+                return studentArray[i]; // return the found student
             }
         }
-        return null;
+    
+        if (sc != null) {
+            System.out.println("\nStudent not found.");
+        }
+    
+        return null; // return null if not found
     }
 
     public void editStudent(String targetId, Scanner sc) {
-        Student student = searchStudent(targetId);
+        Student student = searchStudent(targetId, null);
 
         if (student == null) {
             System.out.println("\nStudent not found.");
@@ -106,12 +121,23 @@ public class Student {
 
     public void displayStudent(Student s) {
         if (s != null) {
+            // Display single student
             System.out.println("---------------------------");
             System.out.println("ID:    " + s.getStudentId());
             System.out.println("Name:  " + s.getFirstName() + " " + s.getLastName());
             System.out.println("Email: " + s.getEmail());
             System.out.println("Phone: " + s.getPhoneNum());
             System.out.println("---------------------------");
+        } else {
+            // Display all students
+            if (studentCount == 0) {
+                System.out.println("\nNo students in the database.");
+                return;
+            }
+            System.out.println("\nAll Students:");
+            for (int i = 0; i < studentCount; i++) {
+                displayStudent(studentArray[i]); // reuse same method
+            }
         }
     }
 }
