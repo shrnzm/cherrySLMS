@@ -66,41 +66,57 @@ class CourseManager {
     public void editCourse(String courseCode, Scanner sc) {
         Course course = searchCourse(courseCode);
 
-        if (course != null) {
-            System.out.print("Enter New Course Name: ");
-            course.setCourseName(sc.nextLine());
-            
-            //Check that credit hour is an integer
-            int creditHour = -1;
-            while (true) {
-                System.out.print("Enter New Credit Hour: ");
-                String input = sc.nextLine();
-                try {
-                    creditHour = Integer.parseInt(input);
-                    if (creditHour <= 0) {
-                        System.out.println("Credit hour must be a positive integer.");
-                    } else {
-                        break;
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid input! Please enter an integer.");
-                }
-            }
-            course.setCreditHour(creditHour);
-
-            System.out.print("Enter New Summary: ");
-            course.setCourseSummary(sc.nextLine());
-
-            System.out.print("Enter New MS Teams Link: ");
-            course.setMsTeamsLink(sc.nextLine());
-            
-            System.out.println("\nCourse updated successfully.\nUpdated details:\n");
-            
-            //Display edited course details
-            displayCourse(course);
-        } else {
+        if (course == null) {
             System.out.println("\nCourse not found.");
+            return;
         }
+
+        System.out.println("\nCourse found.\n");
+        
+        //Display details of course to edit
+        displayCourse(course);
+
+        System.out.print("\nAre you sure you want to edit this course? (Y/N): ");
+        String confirm = sc.nextLine();
+
+        //Check for confirmation
+        if (confirm.equalsIgnoreCase("N")) {
+            System.out.println("Edit cancelled.");
+            return;
+        }
+        
+        //Enter new details of course
+        System.out.print("Enter New Course Name: ");
+        course.setCourseName(sc.nextLine());
+
+        //Check that credit hour is an integer
+        int creditHour = -1;
+        while (true) {
+            System.out.print("Enter New Credit Hour: ");
+            String input = sc.nextLine();
+            try {
+                creditHour = Integer.parseInt(input);
+                if (creditHour <= 0) {
+                    System.out.println("Credit hour must be a positive integer.");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter an integer.");
+            }
+        }
+        course.setCreditHour(creditHour);
+
+        System.out.print("Enter New Summary: ");
+        course.setCourseSummary(sc.nextLine());
+
+        System.out.print("Enter New MS Teams Link: ");
+        course.setMsTeamsLink(sc.nextLine());
+
+        System.out.println("\nCourse updated successfully.\nUpdated details:\n");
+
+        //Display edited course details
+        displayCourse(course);
     }
     
     //Delete Course Method
