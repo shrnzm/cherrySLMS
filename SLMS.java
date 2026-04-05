@@ -64,6 +64,120 @@ class SLMS {
         }
     }
 
+    //Error Handling
+    public static void manageEnrollments(Scanner sc, CourseManager cManager, StudentManager sManager, boolean[][] enrollment) {
+        while (true) {
+            System.out.println("\n=== Enrollment & Relationship Management ===\n");
+            System.out.println("1. Add Student to Course (Enroll)");
+            System.out.println("2. List all Courses for a Student");
+            System.out.println("3. List all Students in a Course");
+            System.out.println("4. Back to Main Menu");
+
+            System.out.print("\nChoose option: ");
+            String choice = sc.nextLine();
+
+            if (choice.equals("1")) {
+                enrollProcess(sc, cManager, sManager, enrollment);
+            } else if (choice.equals("2")) {
+                viewStudentEnrollments(sc, sManager, cManager, enrollment);
+            } else if (choice.equals("3")) {
+                viewCourseEnrollments(sc, cManager, sManager, enrollment);
+            } else if (choice.equals("4")) {
+                break;
+            } else {
+                System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static void enrollProcess(Scanner sc, CourseManager cManager, StudentManager sManager, boolean[][] enrollment) {
+        System.out.print("Enter Student ID: ");
+        String sId = sc.nextLine();
+        System.out.print("Enter Course Code: ");
+        String cCode = sc.nextLine();
+
+        int sIndex = -1, cIndex = -1;
+
+        // 3a. Error Handling: Find indices and check if they exist
+        for (int i = 0; i < 500; i++) {
+            Student s = sManager.getStudentByIndex(i);
+            if (s != null && s.getStudentId().equalsIgnoreCase(sId)) { sIndex = i; break; }
+        }
+        for (int i = 0; i < 100; i++) {
+            Course c = cManager.getCourseByIndex(i);
+            if (c != null && c.getCourseCode().equalsIgnoreCase(cCode)) { cIndex = i; break; }
+        }
+
+        if (sIndex == -1 || cIndex == -1) {
+            System.out.println("\n[ERROR] Student or course not found in the system.");
+            return;
+        }
+
+        // 3a. Error Handling: Attempting to assign same student to course
+        if (enrollment[cIndex][sIndex]) {
+            System.out.println("\n[ERROR] This student is already enrolled in this course.");
+        } else {
+            enrollment[cIndex][sIndex] = true;
+            System.out.println("\n[SUCCESS] Enrollment completed successfully.");
+        }
+    }
+
+    private static void viewStudentEnrollments(Scanner sc, StudentManager sManager, CourseManager cManager, boolean[][] enrollment) {
+        System.out.print("Enter Student ID: ");
+        String sId = sc.nextLine();
+        int sIndex = -1;
+
+        for (int i = 0; i < 500; i++) {
+            Student s = sManager.getStudentByIndex(i);
+            if (s != null && s.getStudentId().equalsIgnoreCase(sId)) { sIndex = i; break; }
+        }
+
+        if (sIndex == -1) {
+            System.out.println("\n[ERROR] Student not found.");
+            return;
+        }
+
+        boolean found = false;
+        System.out.println("\nEnrolled Courses for " + sId + ":");
+        for (int i = 0; i < 100; i++) {
+            if (enrollment[i][sIndex]) {
+                Course c = cManager.getCourseByIndex(i);
+                System.out.println("- " + c.getCourseCode() + ": " + c.getCourseName());
+                found = true;
+            }
+        }
+        // 3a. Error Handling: Student without an assigned course
+        if (!found) System.out.println("[ERROR] This student is not assigned to any courses.");
+    }
+
+    private static void viewCourseEnrollments(Scanner sc, CourseManager cManager, StudentManager sManager, boolean[][] enrollment) {
+        System.out.print("Enter Course Code: ");
+        String cCode = sc.nextLine();
+        int cIndex = -1;
+
+        for (int i = 0; i < 100; i++) {
+            Course c = cManager.getCourseByIndex(i);
+            if (c != null && c.getCourseCode().equalsIgnoreCase(cCode)) { cIndex = i; break; }
+        }
+
+        if (cIndex == -1) {
+            System.out.println("\n[ERROR] Course not found.");
+            return;
+        }
+
+        boolean found = false;
+        System.out.println("\nStudents enrolled in " + cCode + ":");
+        for (int i = 0; i < 500; i++) {
+            if (enrollment[cIndex][i]) {
+                Student s = sManager.getStudentByIndex(i);
+                System.out.println("- " + s.getStudentId() + ": " + s.getFirstName() + " " + s.getLastName());
+                found = true;
+            }
+        }
+        // 3a. Error Handling: Course without an assigned student
+        if (!found) System.out.println("[ERROR] No students are assigned to this course.");
+    }
+
     //Course Management Menu
     public static void manageCourses(Scanner sc, CourseManager manager) {
         while (true) {
