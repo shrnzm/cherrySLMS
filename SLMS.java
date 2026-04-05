@@ -11,6 +11,14 @@ class SLMS {
         //Create student manager object to manage students
         StudentManager studentManager = new StudentManager();
 
+        final int MAX_COURSES = 100;
+        final int MAX_STUDENTS = 500;
+
+        Course[] courses = new Course[MAX_COURSES];
+        Student[] students = new Student[MAX_STUDENTS];
+
+        boolean[][] enrollment = new boolean[MAX_COURSES][MAX_STUDENTS];
+
         //Main menu for SLMS
         while (true) {
             System.out.println("\n===== Welcome to cherrySLMS! =====\n");
