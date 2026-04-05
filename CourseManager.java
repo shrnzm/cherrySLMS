@@ -189,3 +189,8 @@ class CourseManager {
         }
     }
 }
+
+//Retrieve Course
+public Course getCourseByIndex(int index) {
+    return courseArray[index];
+}
