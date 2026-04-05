@@ -197,3 +197,8 @@ class StudentManager {
         }
     }
 }
+
+//Retrieve Student
+public Student getStudentByIndex(int index) {
+    return studentArray[index];
+}
