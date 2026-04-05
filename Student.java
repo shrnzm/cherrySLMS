@@ -6,6 +6,7 @@ public class Student {
     private String studentId;
     private String email;
     private String phoneNum;
+    private String studentName;
     
     //Getter method to retrieve student's first name
     public String getFirstName(){
@@ -55,5 +56,15 @@ public class Student {
     //Setter method to set student's phone number
     public void setPhoneNum(String phoneNo){
         phoneNum = phoneNo;
+    }
+
+    //Getter method to retrieve student's name
+    public String getStudentName() {
+        return studentName; 
+    }
+
+    //Setter method to set student's name
+    public void setStudentName(String name) { 
+        studentName = name; 
     }
 }
