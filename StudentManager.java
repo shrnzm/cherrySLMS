@@ -23,8 +23,6 @@ class StudentManager {
         System.out.print("Enter Last Name: ");
         newStudent.setLastName(sc.nextLine());
 
-        newStudent.setStudentName(newStudent.getFirstName() + " " + newStudent.getLastName());
-
         System.out.print("Enter Student ID: ");
         newStudent.setStudentId(sc.nextLine());
 
@@ -196,9 +194,4 @@ class StudentManager {
             System.out.println("-------------------");
         }
     }
-}
-
-//Retrieve Student
-public Student getStudentByIndex(int index) {
-    return studentArray[index];
 }
