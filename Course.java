@@ -6,6 +6,7 @@ public class Course {
     private int creditHour;
     private String courseSummary;
     private String msTeamsLink;
+    private String courseType;
 
     //Getter method to retrieve course name
     public String getCourseName() {
@@ -55,5 +56,15 @@ public class Course {
     //Setter method to set MS teams link
     public void setMsTeamsLink(String link) {
         msTeamsLink = link;
+    }
+
+    //Getter method to retrieve course type
+    public String getCourseType() {
+        return courseType; 
+    }
+
+    //Setter method to set course type
+    public void setCourseType(String type) {
+        courseType = type; 
     }
 }
