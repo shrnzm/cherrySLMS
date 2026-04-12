@@ -5,6 +5,11 @@ class StudentManager {
     //Array to store Student objects
     private Student[] studentArray = new Student[500];
     private int studentCount = 0;
+    private SuggestionAPI cacheAPI;
+
+    public StudentManager(SuggestionAPI cacheAPI) {
+        this.cacheAPI = cacheAPI;
+    }
 
     //Add Student Method
     public void addStudent(Scanner sc) {
@@ -24,7 +29,14 @@ class StudentManager {
         newStudent.setLastName(sc.nextLine());
 
         System.out.print("Enter Student ID: ");
-        newStudent.setStudentId(sc.nextLine());
+        String studentId = sc.nextLine();
+        
+        //Check for duplicates
+        if (searchStudent(studentId) != null) {
+            System.out.println("Error! Student ID already exists.");
+            return;
+        }
+        newStudent.setStudentId(studentId);
 
         //Check email for correct format
         while (true) {
@@ -53,13 +65,17 @@ class StudentManager {
         //Add new student to end of array
         studentArray[studentCount] = newStudent;
         studentCount++;
+        
+        //Add new student ID to cache
+        cacheAPI.cacheStudent(newStudent.getStudentId());
+
         System.out.println("\nStudent added successfully.");
     }
 
     //Search Student Method
     public Student searchStudent(String studentId) {
         for (int i = 0; i < studentCount; i++) {
-            if (studentArray[i].getStudentId().equals(studentId)) {
+            if (studentArray[i].getStudentId().equalsIgnoreCase(studentId)) {
                 return studentArray[i];
             }
         }
