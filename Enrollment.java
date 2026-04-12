@@ -1,3 +1,5 @@
+import java.util.*;
+
 class Enrollment {
 
     //Enrollment class attributes
@@ -7,37 +9,53 @@ class Enrollment {
 
     private CourseManager courseManager;
     private StudentManager studentManager;
+    private Scanner sc;
+    private SuggestionAPI cacheAPI;
 
     //Constructor to connect managers
-    public Enrollment(CourseManager cm, StudentManager sm) {
+    public Enrollment(CourseManager cm, StudentManager sm, Scanner sc, SuggestionAPI cacheAPI) {
         this.courseManager = cm;
         this.studentManager = sm;
+        this.sc = sc;
+        this.cacheAPI = cacheAPI;
     }
 
     //Add a course to a student
-    public void addCourse(String studentId, String courseCode) {
+    public void addCourse() {
         //Check if array is full
         if (count >= studentIDs.length) {
             System.out.println("\nEnrollment list is full.");
             return;
         }
-        
+
+        //Show student ID suggestions
+        cacheAPI.showAllStudents();
+
+        System.out.print("Enter Student ID: ");
+        String studentId = sc.nextLine();
+
         //Check if student exists
         if (studentManager.searchStudent(studentId) == null) {
-            System.out.println("Error! Student not found.");
+            System.out.println("\nError! Student not found.");
             return;
         }
 
+        //Show course code suggestions
+        cacheAPI.showAllCourses();
+
+        System.out.print("Enter Course Code: ");
+        String courseCode = sc.nextLine();
+        
         // Check if course exists
         if (courseManager.searchCourse(courseCode) == null) {
-            System.out.println("Error! Course does not exist.");
+            System.out.println("\nError! Course does not exist.");
             return;
         }
 
         // Check for duplicate
         for (int i = 0; i < count; i++) {
             if (studentIDs[i].equalsIgnoreCase(studentId) && courseCodes[i].equalsIgnoreCase(courseCode)) {
-                System.out.println("Error! Student is already enrolled in this course.");
+                System.out.println("\nError! Student is already enrolled in this course.");
                 return;
             }
         }
@@ -45,13 +63,61 @@ class Enrollment {
         studentIDs[count] = studentId;
         courseCodes[count] = courseCode;
         count++;
+        
+        cacheAPI.cacheStudent(studentId);
+        cacheAPI.cacheCourse(courseCode);
 
-        System.out.println("Course successfully added to student.");
+        System.out.println("\nCourse successfully added to student.");
     }
 
     //Add a student to a course
-    public void addStudent(String courseCode, String studentId) {
-        addCourse(studentId, courseCode);
+    public void addStudent() {
+        //Check if array is full
+        if (count >= studentIDs.length) {
+            System.out.println("\nEnrollment list is full.");
+            return;
+        }
+
+        //Show course code suggestions
+        cacheAPI.showAllCourses();
+
+        System.out.print("Enter Course Code: ");
+        String courseCode = sc.nextLine();
+        
+        // Check if course exists
+        if (courseManager.searchCourse(courseCode) == null) {
+            System.out.println("\nError! Course does not exist.");
+            return;
+        }
+        
+        //Show student ID suggestions
+        cacheAPI.showAllStudents();
+
+        System.out.print("Enter Student ID: ");
+        String studentId = sc.nextLine();
+
+        //Check if student exists
+        if (studentManager.searchStudent(studentId) == null) {
+            System.out.println("\nError! Student not found.");
+            return;
+        }
+
+        // Check for duplicate
+        for (int i = 0; i < count; i++) {
+            if (studentIDs[i].equalsIgnoreCase(studentId) && courseCodes[i].equalsIgnoreCase(courseCode)) {
+                System.out.println("\nError! Student is already enrolled in this course.");
+                return;
+            }
+        }
+
+        studentIDs[count] = studentId;
+        courseCodes[count] = courseCode;
+        count++;
+        
+        cacheAPI.cacheStudent(studentId);
+        cacheAPI.cacheCourse(courseCode);
+
+        System.out.println("\nStudent successfully added to course.");
     }
 
     //Find a student's course based on student ID
@@ -62,7 +128,7 @@ class Enrollment {
                 return;
             }
         }
-        System.out.println("No course found for this student.");
+        System.out.println("\nNo course found for this student.");
     }
 
     //List all courses enrolled by a student
@@ -76,7 +142,7 @@ class Enrollment {
             }
         }
         if (!found) {
-            System.out.println("This student has no enrolled courses.");
+            System.out.println("\nThis student has no enrolled courses.");
         }
     }
 
@@ -88,7 +154,7 @@ class Enrollment {
                 return;
             }
         }
-        System.out.println("No student found in this course.");
+        System.out.println("\nNo student found in this course.");
     }
 
     //List all students enrolled in a course
@@ -102,7 +168,7 @@ class Enrollment {
             }
         }
         if (!found) {
-            System.out.println("This course has no students.");
+            System.out.println("\nThis course has no students.");
         }
     }
 }
