@@ -5,6 +5,11 @@ class CourseManager {
     //Array to store Course objects
     private Course[] courseArray = new Course[100];
     private int courseCount = 0;
+    private SuggestionAPI cacheAPI;
+
+    public CourseManager(SuggestionAPI cacheAPI) {
+        this.cacheAPI = cacheAPI;
+    }
 
     //Add Course Method
     public void addCourse(Scanner sc) {
@@ -18,7 +23,14 @@ class CourseManager {
         Course newCourse = new Course();
 
         System.out.print("\nEnter Course Code: ");
-        newCourse.setCourseCode(sc.nextLine());
+        String courseCode = sc.nextLine();
+        
+        //Check for duplicates
+        if (searchCourse(courseCode) != null) {
+            System.out.println("Error! Course code already exists.");
+            return;
+        }
+        newCourse.setCourseCode(courseCode);
 
         System.out.print("Enter Course Name: ");
         newCourse.setCourseName(sc.nextLine());
@@ -50,13 +62,17 @@ class CourseManager {
         //Add new course to end of array
         courseArray[courseCount] = newCourse;
         courseCount++;
+        
+        //Add new course code to cache
+        cacheAPI.cacheCourse(newCourse.getCourseCode());
+        
         System.out.println("\nCourse added successfully.");
     }
 
     //Search Course Method
     public Course searchCourse(String courseCode) {
         for (int i = 0; i < courseCount; i++) {
-            if (courseArray[i].getCourseCode().equals(courseCode)) {
+            if (courseArray[i].getCourseCode().equalsIgnoreCase(courseCode)) {
                 return courseArray[i];
             }
         }
@@ -189,6 +205,4 @@ class CourseManager {
             System.out.println("-------------------");
         }
     }
-}CourseByIndex(int index) {
-    return courseArray[index];
 }
