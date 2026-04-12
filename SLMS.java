@@ -5,14 +5,17 @@ class SLMS {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
+        //Create api object to manage cache api operations
+        SuggestionAPI api = new SuggestionAPI();
+
         //Create course manager object to manage courses 
-        CourseManager courseManager = new CourseManager();
+        CourseManager courseManager = new CourseManager(api);
 
         //Create student manager object to manage students
-        StudentManager studentManager = new StudentManager();
+        StudentManager studentManager = new StudentManager(api);
 
         //Create enrollment object to handle enrollment
-        Enrollment enrollment = new Enrollment(courseManager, studentManager);
+        Enrollment enrollment = new Enrollment(courseManager, studentManager, sc, api);
 
         //Main menu for SLMS
         while (true) {
@@ -42,17 +45,17 @@ class SLMS {
             switch (mainChoice) {
                 case 1:
                     //Go to course management menu if choice is 1
-                    manageCourses(sc, courseManager);
+                    manageCourses(sc, courseManager, api);
                     break;
 
                 case 2:
                     //Go to student management menu if choice is 2
-                    manageStudents(sc, studentManager);
+                    manageStudents(sc, studentManager, api);
                     break;
 
                 case 3:
                     //Go to enrollment management menu if choice is 3
-                    manageEnrollments(sc, enrollment);
+                    manageEnrollments(sc, enrollment, api);
                     break;
 
                 case 4:
@@ -66,7 +69,7 @@ class SLMS {
     }
 
     //Course Management Menu
-    public static void manageCourses(Scanner sc, CourseManager manager) {
+    public static void manageCourses(Scanner sc, CourseManager manager, SuggestionAPI api) {
         while (true) {
             System.out.println("\n=== Course Management Menu ===\n");
             System.out.println("1. Add Course");
@@ -100,7 +103,11 @@ class SLMS {
                     break;
 
                 case 2:
+                    //Show course code suggestions
+                    api.showAllCourses();
+                    
                     System.out.print("Enter course code to search: ");
+
                     //Call Search Course Method
                     Course foundCourse = manager.searchCourse(sc.nextLine());
 
@@ -115,13 +122,21 @@ class SLMS {
                     break;
 
                 case 3:
+                    //Show course code suggestions
+                    api.showAllCourses();
+                    
                     System.out.print("Enter course code to edit: ");
+                    
                     //Call Edit Course Method
                     manager.editCourse(sc.nextLine(), sc);
                     break;
 
                 case 4:
+                    //Show course code suggestions
+                    api.showAllCourses();
+                    
                     System.out.print("Enter course code to delete: ");
+
                     //Call Delete Course Method
                     manager.deleteCourse(sc.nextLine(), sc);
                     break;
@@ -142,7 +157,7 @@ class SLMS {
     }
 
     //Student Management Menu
-    public static void manageStudents(Scanner sc, StudentManager manager) {
+    public static void manageStudents(Scanner sc, StudentManager manager, SuggestionAPI api) {
         while (true) {
             System.out.println("\n=== Student Management Menu ===\n");
             System.out.println("1. Add Student");
@@ -176,7 +191,11 @@ class SLMS {
                     break;
 
                 case 2:
+                    //Show student ID suggestions
+                    api.showAllStudents();
+                    
                     System.out.print("Enter student ID to search: ");
+
                     //Call Search Student Method
                     Student foundStudent = manager.searchStudent(sc.nextLine());
 
@@ -191,13 +210,21 @@ class SLMS {
                     break;
 
                 case 3:
+                    //Show student ID suggestions
+                    api.showAllStudents();
+                    
                     System.out.print("Enter student ID to edit: ");
+                    
                     //Call Edit Student Method
                     manager.editStudent(sc.nextLine(), sc);
                     break;
 
                 case 4:
+                    //Show student ID suggestions
+                    api.showAllStudents();
+                    
                     System.out.print("Enter student ID to delete: ");
+                    
                     //Call Delete Student Method
                     manager.deleteStudent(sc.nextLine(), sc);
                     break;
@@ -217,7 +244,7 @@ class SLMS {
         }
     }
 
-    public static void manageEnrollments(Scanner sc, Enrollment em) {
+    public static void manageEnrollments(Scanner sc, Enrollment em, SuggestionAPI api) {
         while (true) {
             System.out.println("\n=== Enrollment Menu ===\n");
             System.out.println("1. Add a course to a student");
@@ -247,32 +274,18 @@ class SLMS {
 
             switch (choice) {
                 case 1:
-                    //Enter Student ID of student to add course to
-                    System.out.print("Enter Student ID: ");
-                    String studentID = sc.nextLine();
-                    
-                    //Enter Course Code of course to add
-                    System.out.print("Enter Course Code: ");
-                    String courseCode = sc.nextLine();
-                    
                     //Call addCourse method
-                    em.addCourse(studentID, courseCode);
+                    em.addCourse();
                     break;
 
                 case 2:
-                    //Enter Course Code of course to add student to
-                    System.out.print("Enter Course Code: ");
-                    String course_Code = sc.nextLine();
-                    
-                    //Enter Student ID of student to add to course
-                    System.out.print("Enter Student ID: ");
-                    String student_ID = sc.nextLine();
-                    
-                    //Call addStudent method
-                    em.addStudent(course_Code, student_ID);
+                    em.addStudent();
                     break;
 
                 case 3:
+                    //Show student ID suggestions
+                    api.showAllStudents();
+                    
                     //Enter Student ID of student to find student's course
                     System.out.print("Enter Student ID: ");
                     
@@ -281,22 +294,31 @@ class SLMS {
                     break;
 
                 case 4:
+                    //Show student ID suggestions
+                    api.showAllStudents();
+                    
                     //Enter Student ID of student to view all courses the selected student is enrolled in
                     System.out.print("Enter Student ID: ");
-                    
+
                     //Call listCourses method
                     em.listCourses(sc.nextLine());
                     break;
 
                 case 5:
+                    //Show course code suggestions
+                    api.showAllCourses();
+                    
                     //Enter Course Code of course to find student
                     System.out.print("Enter Course Code: ");
-                    
+
                     //Call findStudent method
                     em.findStudent(sc.nextLine());
                     break;
 
                 case 6:
+                    //Show course code suggestions
+                    api.showAllCourses();
+                    
                     //Enter Course Code to view all students enrolled in the selected course
                     System.out.print("Enter Course Code: ");
                     
@@ -306,7 +328,7 @@ class SLMS {
 
                 case 7:
                     return;
-                    
+
                 default:
                     System.out.println("Invalid option! Please try again.");
             }
