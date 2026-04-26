@@ -1,9 +1,11 @@
+package com.mycompany.slms;
+
 import java.util.*;
 
 class CourseManager {
-
-    //Array to store Course objects
+    // Array to store Course objects
     private Course[] courseArray = new Course[100];
+    
     private int courseCount = 0;
     private SuggestionAPI cacheAPI;
 
@@ -11,21 +13,21 @@ class CourseManager {
         this.cacheAPI = cacheAPI;
     }
 
-    //Add Course Method
+    // Add Course Method
     public void addCourse(Scanner sc) {
-        //Check if array is full
+        // Check if array is full
         if (courseCount >= courseArray.length) {
             System.out.println("\nCourse list is full. Cannot add new course.");
             return;
         }
 
-        //Create new Course object
+        // Create new Course object
         Course newCourse = new Course();
 
         System.out.print("\nEnter Course Code: ");
         String courseCode = sc.nextLine();
-        
-        //Check for duplicates
+
+        // Check for duplicates
         if (searchCourse(courseCode) != null) {
             System.out.println("Error! Course code already exists.");
             return;
@@ -35,7 +37,7 @@ class CourseManager {
         System.out.print("Enter Course Name: ");
         newCourse.setCourseName(sc.nextLine());
 
-        //Check that credit hour is an integer
+        // Check that credit hour is an integer
         int creditHour = -1;
         while (true) {
             System.out.print("Enter Credit Hour: ");
@@ -59,17 +61,17 @@ class CourseManager {
         System.out.print("Enter MS Teams Link: ");
         newCourse.setMsTeamsLink(sc.nextLine());
 
-        //Add new course to end of array
+        // Add new course to end of array
         courseArray[courseCount] = newCourse;
         courseCount++;
-        
-        //Add new course code to cache
+
+        // Add new course code to cache
         cacheAPI.cacheCourse(newCourse.getCourseCode());
-        
+
         System.out.println("\nCourse added successfully.");
     }
 
-    //Search Course Method
+    // Search Course Method
     public Course searchCourse(String courseCode) {
         for (int i = 0; i < courseCount; i++) {
             if (courseArray[i].getCourseCode().equalsIgnoreCase(courseCode)) {
@@ -79,7 +81,7 @@ class CourseManager {
         return null;
     }
 
-    //Edit Course Method
+    // Edit Course Method
     public void editCourse(String courseCode, Scanner sc) {
         Course course = searchCourse(courseCode);
 
@@ -89,24 +91,26 @@ class CourseManager {
         }
 
         System.out.println("\nCourse found.\n");
-        
-        //Display details of course to edit
+
+        // Display details of course to edit
         displayCourse(course);
 
         System.out.print("\nAre you sure you want to edit this course? (Y/N): ");
         String confirm = sc.nextLine();
 
-        //Check for confirmation
+        // Check for confirmation
         if (confirm.equalsIgnoreCase("N")) {
             System.out.println("Edit cancelled.");
             return;
         }
-        
-        //Enter new details of course
+
+        System.out.println();
+
+        // Enter new details of course
         System.out.print("Enter New Course Name: ");
         course.setCourseName(sc.nextLine());
 
-        //Check that credit hour is an integer
+        // Check that credit hour is an integer
         int creditHour = -1;
         while (true) {
             System.out.print("Enter New Credit Hour: ");
@@ -132,11 +136,11 @@ class CourseManager {
 
         System.out.println("\nCourse updated successfully.\nUpdated details:\n");
 
-        //Display edited course details
+        // Display edited course details
         displayCourse(course);
     }
 
-    //Delete Course Method
+    // Delete Course Method
     public void deleteCourse(String courseCode, Scanner sc) {
         Course course = searchCourse(courseCode);
 
@@ -147,43 +151,50 @@ class CourseManager {
 
         System.out.println("\nCourse found.\n");
 
-        //Display details of course to delete
+        // Display details of course to delete
         displayCourse(course);
 
         System.out.print("\nAre you sure you want to delete this course? (Y/N): ");
         String confirm = sc.nextLine();
 
-        //Check for confirmation
+        // Check for confirmation
         if (confirm.equalsIgnoreCase("N")) {
             System.out.println("Deletion cancelled.");
             return;
         }
 
-        //Find index of course to delete
+        // Find index of course to delete
         int index = -1;
         for (int i = 0; i < courseCount; i++) {
-            if (courseArray[i].getCourseCode().equals(courseCode)) {
+            if (courseArray[i] != null && courseArray[i].getCourseCode().equalsIgnoreCase(courseCode)) {
                 index = i;
                 break;
             }
         }
 
-        //Shift all courses after deleted one to the left
+        // If course is not found
+        if (index == -1) {
+            System.out.println("\nCourse not found.");
+            return;
+        }
+
+        // Shift all courses after deleted one to the left
         for (int i = index; i < courseCount - 1; i++) {
             courseArray[i] = courseArray[i + 1];
         }
 
-        //Empty the last element in courseArray
+        // Empty the last element in courseArray
         courseArray[courseCount - 1] = null;
         courseCount--;
-
-        System.out.println("\nCourse deleted successfully!\nUpdated course list:");
-
-        //Display all courses
+        
+        cacheAPI.removeCourse(courseCode);
+        System.out.println("\nCourse deleted successfully!\nUpdated course list:\n");
+       
+        // Display all courses
         viewAllCourses();
     }
 
-    //Display Course Method
+    // Display Course Method
     public void displayCourse(Course course) {
         if (course != null) {
             System.out.println("Course Name: " + course.getCourseName());
@@ -194,10 +205,10 @@ class CourseManager {
         }
     }
 
-    //View All Courses Method
+    // View All Courses Method
     public void viewAllCourses() {
         if (courseCount == 0) {
-            System.out.println("No courses available.");
+            System.out.println("\nNo courses available.");
             return;
         }
         for (int i = 0; i < courseCount; i++) {
