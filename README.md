@@ -4,7 +4,7 @@
 The Student Learning Management System (SLMS) is a modular, web-based system designed to manage students, courses, and course-student relationships. It allows administrators to input, search, edit, and delete course and student profiles, while also managing enrollments and relationships between courses and students. The system is built following pre-set software construction standards, including naming conventions, modularity, and error handling best practices.
 
 📄 Full Project Report:  
-[View the complete SLMS report](https://github.com/shrnzm/cherrySLMS/blob/2f1dee0a983e2909e6a3f1898591d7ef51ad770f/cherrySLMS_report.pdf)
+[View the complete SLMS report](cherrySLMS_full_report.pdf)
 
 ---
 
