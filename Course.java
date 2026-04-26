@@ -1,6 +1,7 @@
-public class Course {
+package com.mycompany.slms;
 
-    //Course class attributes
+class Course {
+    // Course class attributes
     private String courseName;
     private String courseCode;
     private int creditHour;
@@ -8,62 +9,62 @@ public class Course {
     private String msTeamsLink;
     private String courseType;
 
-    //Getter method to retrieve course name
+    // Getter method to retrieve course name
     public String getCourseName() {
         return courseName;
     }
 
-    //Setter method to set course name
+    // Setter method to set course name
     public void setCourseName(String name) {
         courseName = name;
     }
 
-    //Getter method to retrieve course code
+    // Getter method to retrieve course code
     public String getCourseCode() {
         return courseCode;
     }
 
-    //Setter method to set course code
+    // Setter method to set course code
     public void setCourseCode(String code) {
-        courseCode = code;
+        courseCode = code.toUpperCase();
     }
 
-    //Getter method to retrieve credit hour
+    // Getter method to retrieve credit hour
     public int creditHour() {
         return creditHour;
     }
 
-    //Setter method to set credit hour
+    // Setter method to set credit hour
     public void setCreditHour(int hour) {
         creditHour = hour;
     }
 
-    //Getter method to retrieve course summary
+    // Getter method to retrieve course summary
     public String getCourseSummary() {
         return courseSummary;
     }
 
-    //Setter method to set course summary
+    // Setter method to set course summary
     public void setCourseSummary(String summary) {
         courseSummary = summary;
     }
 
-    //Getter method to retrieve MS teams link
+    // Getter method to retrieve MS teams link
     public String getMsTeamsLink() {
         return msTeamsLink;
     }
 
-    //Setter method to set MS teams link
+    // Setter method to set MS teams link
     public void setMsTeamsLink(String link) {
         msTeamsLink = link;
     }
-
-    //Getter method to retrieve course type
+    
+    // Getter method to retrieve course type
     public String getCourseType() {
         return courseType; 
     }
 
-    //Setter method to set course type
+    // Setter method to set course type
     public void setCourseType(String type) {
         courseType = type; 
     }
